@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operatii aritmetice de baza</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0f7fa;
+        }
+        .calculator {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 33px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .calculator h2 {
+            color: #00796b;
+        }
+        .calculator input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #80cbc4;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .calculator input[type="text"]:focus {
+            border-color: #004d40;
+            box-shadow: 0 0 8px rgba(0, 77, 64, 0.5);
+            outline: none;
+        }
+        #operation {
+            width: 70%;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #80cbc4;
+        }
+        .calculator button {
+            width: 100%;
+            padding: 15px;
+            background-color: #00796b;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .calculator button:hover {
+            background-color: #004d40;
+            box-shadow: 0 0 10px rgba(0, 77, 64, 0.5);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #00796b;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .result.error {
+            color: #d32f2f;
+        }
+        .calculator label {
+            display: block;
+            margin: 10px 0 6px;
+            color: #666;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .calculator {
+                padding: 20px;
+            }
+            .calculator input[type="text"], .calculator button {
+                padding: 10px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Operatii Aritmetice de Baza</h2>
+        <label for="num1">Numar 1:</label>
+        <input type="text" id="num1"><br><br>
+
+        <label for="num2">Numar 2:</label>
+        <input type="text" id="num2"><br><br>
+
+        <label for="operation">Operatie:</label><br>
+        <select id="operation">
+            <option value="+">Adunare (+)</option>
+            <option value="-">Scadere (-)</option>
+            <option value="*">Inmultire (*)</option>
+            <option value="/">Impartire (/)</option>
+        </select><br><br>
+
+        <button onclick="performOperation()">Calculeaza</button>
+        <p id="result" class="result"></p>
+    </div>
+
+    <script>
+        function performOperation() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const operation = document.getElementById('operation').value;
+            const resultElement = document.getElementById('result');
+
+            if (isNaN(num1) || isNaN(num2)) {
+                resultElement.textContent = 'Va rugam introduceti numere valide.';
+                resultElement.classList.add('error');
+                return;
+            }
+
+            let result;
+            switch (operation) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 === 0) {
+                        resultElement.textContent = 'Impartirea la zero nu este permisa.';
+                        resultElement.classList.add('error');
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+                default:
+                    resultElement.textContent = 'Operatie necunoscuta.';
+                    resultElement.classList.add('error');
+                    return;
+            }
+
+            resultElement.textContent = 'Rezultat: ' + result;
+            resultElement.classList.remove('error');
+        }
+    </script>
+</body>
+</html>
