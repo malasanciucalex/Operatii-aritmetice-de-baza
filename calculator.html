@@ -115,46 +115,55 @@
     </div>
 
     <script>
-        function performOperation() {
-            const num1 = parseFloat(document.getElementById('num1').value);
-            const num2 = parseFloat(document.getElementById('num2').value);
-            const operation = document.getElementById('operation').value;
-            const resultElement = document.getElementById('result');
+       function isValidNumber(value) {
+    return !isNaN(value) && !isNaN(parseFloat(value));
+}
 
-            if (isNaN(num1) || isNaN(num2)) {
-                resultElement.textContent = 'Va rugam introduceti numere valide.';
+function performOperation() {
+    const num1 = document.getElementById('num1').value;
+    const num2 = document.getElementById('num2').value;
+    const operation = document.getElementById('operation').value;
+    const resultElement = document.getElementById('result');
+
+    if (!isValidNumber(num1) || !isValidNumber(num2)) {
+        resultElement.textContent = 'Vă rugăm introduceți numere valide.';
+        resultElement.classList.add('error');
+        return;
+    }
+
+    const parsedNum1 = parseFloat(num1);
+    const parsedNum2 = parseFloat(num2);
+
+    let result;
+    switch (operation) {
+        case '+':
+            result = parsedNum1 + parsedNum2;
+            break;
+        case '-':
+            result = parsedNum1 - parsedNum2;
+            break;
+        case '*':
+            result = parsedNum1 * parsedNum2;
+            break;
+        case '/':
+            if (parsedNum2 === 0) {
+                resultElement.textContent = 'Împărțirea la zero nu este permisă.';
                 resultElement.classList.add('error');
                 return;
             }
+            result = parsedNum1 / parsedNum2;
+            break;
+        default:
+            resultElement.textContent = 'Operație necunoscută.';
+            resultElement.classList.add('error');
+            return;
+    }
 
-            let result;
-            switch (operation) {
-                case '+':
-                    result = num1 + num2;
-                    break;
-                case '-':
-                    result = num1 - num2;
-                    break;
-                case '*':
-                    result = num1 * num2;
-                    break;
-                case '/':
-                    if (num2 === 0) {
-                        resultElement.textContent = 'Impartirea la zero nu este permisa.';
-                        resultElement.classList.add('error');
-                        return;
-                    }
-                    result = num1 / num2;
-                    break;
-                default:
-                    resultElement.textContent = 'Operatie necunoscuta.';
-                    resultElement.classList.add('error');
-                    return;
-            }
+    const formattedResult = parseFloat(result.toFixed(2));
 
-            resultElement.textContent = 'Rezultat: ' + result;
-            resultElement.classList.remove('error');
-        }
+    resultElement.textContent = 'Rezultat: ' + formattedResult;
+    resultElement.classList.remove('error');
+}
     </script>
 </body>
 </html>
